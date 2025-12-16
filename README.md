@@ -1,114 +1,195 @@
-# [Django Dynamic API](https://appseed.us/developer-tools/django-dynamic-api/)
+DeVa-DevOps (DevOps Virtual Assistant) 🚀
 
-Simple tool that **Generates Secure APIs** on top of `DRF` with minimum effort - actively supported by [AppSeed](https://appseed.us/).
+DeVa is a biometric-first DevOps plugin that lets you push, pull, and manage Git repos directly from Termux, IDEs, or LLM-assisted dev tools using your fingerprint.
 
-<br />
+> ⚠️ Paid product — requires active subscription to unlock all features.
 
-> `Dynamic API Features` - see [video](https://www.youtube.com/watch?v=nPQMUafTrNY) presentation 
 
-- `API engine` provided by `DRF`
-- `Minimal Configuration` (single line in config for each model)
-- `Handles any model` defined across the project
 
-<br />
-
-![Django Dynamic API - DRF Interface (open-source tool).](https://user-images.githubusercontent.com/51070104/197181145-f7458df7-23c3-4c14-bcb1-8e168882a104.jpg)
-
-<br />
-
-## How to use it
-
-<br />
-
-> **Step #1** - `Install the package` 
-
-```bash
-$ pip install django-dynamic-api
-// OR
-$ pip install git+https://github.com/app-generator/django-dynamic-api.git
-```
-
-<br />
-
-> **Step #2** - `Update Configuration`, include the new APPs
-
-```python
-INSTALLED_APPS = [
-    'django_dyn_api',            # Django Dynamic API  # <-- NEW
-    'rest_framework',            # Include DRF         # <-- NEW 
-    'rest_framework.authtoken',  # Include DRF Auth    # <-- NEW   
-]
-```
-
-<br />
-
-> **Step #3** - `Register the model` in `core/settings.py` (DYNAMIC_API section)
-
-This sample code assumes that `app1` exists and model `Book` is defined and migrated.
-
-```python
-
-DYNAMIC_API = {
-    # pattern: 
-    # API_SLUG -> Import_PATH 
-    'books'  : "app1.models.Book",
-}
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-    ],
-}
-
-```
-
-<br />
-
-> **Step #4** - `Migrate DB` and create the tables used by `DRF` 
-
-```bash
-$ python manage.py makemigrations
-$ python manage.py migrate
-```
-
-<br />
-
-> **Step #5** - `Update routing`, include APIs 
-
-```python
-from django.contrib import admin
-from django.urls import path, include                        # <-- UPD: 'include` directive
-from rest_framework.authtoken.views import obtain_auth_token # <-- NEW
-
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path('', include('django_dyn_api.urls')),     # <-- NEW
-    path('login/jwt/', view=obtain_auth_token),   # <-- NEW
-]    
-```    
-
-<br />
-
-> **Step #6** - `Use API` 
-
-If the managed model is `Books`, the API interface is `/api/books/` and all CRUD methods are available. 
-
-> Note: for mutating requests, the `JWT Token` is provided by `http://localhost:8000/login/jwt/` route (the user should exist). 
-
-<br />
-
-![Django API Generator - POSTMAN Interface (open-source tool).](https://user-images.githubusercontent.com/51070104/197181265-eb648e27-e5cf-4f3c-b330-d000aba53c6a.jpg)
-
-<br />
-
-### Links & resources 
-
-- [DRF](https://www.django-rest-framework.org/) - HOMEpage
-- More [Developer Tools](https://appseed.us/developer-tools/) provided by `AppSeed`
-- Ask for [Support](https://appseed.us/support/) via `Email` & `Discord` 
-
-<br />
 
 ---
-[Django Dynamic API](https://appseed.us/developer-tools/django-dynamic-api/) - Open-source library provided by **[AppSeed](https://appseed.us/)**
+
+Features ✨
+
+Biometric authentication for Git pushes, pulls, and merges
+
+On-device, ephemeral credential management (no plaintext tokens anywhere)
+
+Works on Termux, VSCode, other IDEs, and LLM-assisted development tools
+
+Fully audited push logs (~/.git-bio-log)
+
+Optional voice DNA verification for dual-factor authentication
+
+Session caching (15 minutes default)
+
+Enterprise-ready: fleet-wide deployments and multi-agent support
+
+
+
+---
+
+Pricing & Licensing 💰
+
+Plan	Price	Features
+
+Starter	$49/year	Biometric Git access, Termux & IDE support, single-device license
+Pro	$149/year	Multi-device license, LLM agent integration, voice verification
+Enterprise	Custom	Fleet-wide deployment, audit log integration, enterprise support
+
+
+> Subscription required to activate the plugin.
+
+
+
+
+---
+
+Installation 🛠️
+
+Termux / Android:
+
+pkg install python git
+pip install termux-api
+git clone https://github.com/FacePrintPay/DeVa-DevOps.git
+cd DeVa-DevOps
+chmod +x bio-git-push.sh
+git config --global credential.helper /data/data/com.termux/files/home/bio-git-cred.py
+
+Desktop IDEs / LLMs:
+
+1. Clone repo: git clone https://github.com/FacePrintPay/DeVa-DevOps.git
+
+
+2. Configure credential helper:
+
+
+
+git config --global credential.helper /path/to/bio-git-cred.py
+
+3. Activate your subscription (edit config/subscription.json)
+
+
+
+
+---
+
+Quickstart 📦
+
+Step 1 — Prepare Repo
+
+cd ~/test-repo
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/bio-git-test.git
+
+Step 2 — Push with Biometric Auth
+
+./bio-git-push.sh main
+
+Expected Flow:
+
+1. Terminal pauses
+
+
+2. Biometric prompt appears: GitHub Push Required
+
+
+3. Scan fingerprint → Success
+
+
+4. Encrypted PAT is decrypted in memory (never written to disk)
+
+
+5. Push completes
+
+
+6. Session cached for 15 minutes
+
+
+7. Audit log updated: cat ~/.git-bio-log
+
+
+
+
+---
+
+How It Works 🔑
+
+1. Your fingerprint is used as a cryptographic key
+
+
+2. Credentials remain ephemeral & zero-knowledge
+
+
+3. Pushes are fully audited
+
+
+4. Optional: voice DNA verification for dual-factor security
+
+
+5. Works across Termux, IDEs, and LLMs
+
+
+
+
+---
+
+Requirements 🔧
+
+Fingerprint-enabled device (Android / Termux)
+
+Git installed
+
+Python 3.x
+
+Termux API installed (for Android)
+
+Active subscription
+
+
+
+---
+
+FAQ ❓
+
+Q: Is my fingerprint stored?
+A: No. Fingerprint is only used to decrypt ephemeral credentials.
+
+Q: Can I use multiple devices?
+A: Yes — requires Pro or Enterprise plan.
+
+Q: What if I lose my device?
+A: Credentials are ephemeral. Pushes require fingerprint; subscription allows remote revocation.
+
+Q: Can LLMs trigger pushes?
+A: Yes, but fingerprint confirmation is mandatory.
+
+
+---
+
+Next-Level Upgrades 🚀
+
+SSH key mode for enterprise security
+
+Voice DNA verification for dual-factor auth
+
+LLM agent integration for PR approval
+
+Fleet-wide deployment for multi-agent DevOps
+
+
+
+---
+
+License & Contact 📬
+
+Paid subscription required.
+MIT license for non-commercial dev only.
+
+Email: cygel.co@gmail.com
+GitHub: FacePrintPay/DeVa-DevOps
+
+
+---
+
+Your fingerprint is now your Git key. One scan, full control. 🔥🖐️
